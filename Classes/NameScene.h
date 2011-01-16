@@ -10,7 +10,7 @@
 #import "cocos2d.h"
 
 @interface NameScene : CCLayer {
-
+	CCLabelAtlas *nameLabel_;
 }
 
 + (id)scene;
