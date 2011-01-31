@@ -11,8 +11,12 @@
 
 @interface NameScene : CCLayer {
 	CCLabelAtlas *nameLabel_;
+	
+	NSArray *keyboardLines_;
+	NSMutableString *name_;
 }
 
 + (id)scene;
+- (CCMenuItem *)itemForAtRow:(NSInteger)row column:(NSInteger)column;
 
 @end

@@ -10,9 +10,11 @@
 		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
 		1F3B9A2D0EF2145700286867 /* HangmanAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F3B9A2B0EF2145700286867 /* HangmanAppDelegate.m */; };
 		3B07AED612DBBA39005F6465 /* MenuScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B07AED512DBBA39005F6465 /* MenuScene.m */; };
+		3B50222B12F58B7C00C189A1 /* GameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */; };
 		3B50E2A312DE5B25008C4F29 /* NameScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B50E2A212DE5B25008C4F29 /* NameScene.m */; };
 		3B50E2A612DE5B38008C4F29 /* AchievementsScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B50E2A512DE5B38008C4F29 /* AchievementsScene.m */; };
 		3B50E2A912DE5B4B008C4F29 /* AboutScene.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B50E2A812DE5B4B008C4F29 /* AboutScene.m */; };
+		3B5297FB12ECCFFA00B69FF8 /* Chalkduster.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3B5297FA12ECCFFA00B69FF8 /* Chalkduster.ttf */; };
 		3B8B996B12DE528700FAA515 /* background-clean-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B8B996512DE528700FAA515 /* background-clean-hd.png */; };
 		3B8B996C12DE528700FAA515 /* background-clean.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B8B996612DE528700FAA515 /* background-clean.png */; };
 		3B8B996D12DE528700FAA515 /* background-dirty-1-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 3B8B996712DE528700FAA515 /* background-dirty-1-hd.png */; };
@@ -23,6 +25,7 @@
 		3BC77B1F12DCFB0E00EE2B7E /* spritesheet.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC77B1D12DCFB0E00EE2B7E /* spritesheet.png */; };
 		3BC77B2C12DCFB6E00EE2B7E /* spritesheet-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BC77B2A12DCFB6E00EE2B7E /* spritesheet-hd.plist */; };
 		3BC77B2D12DCFB6E00EE2B7E /* spritesheet-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = 3BC77B2B12DCFB6E00EE2B7E /* spritesheet-hd.png */; };
+		3BEE7D7412F75F7700A7E357 /* words.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3BEE7D7312F75F7700A7E357 /* words.plist */; };
 		504DFBCE10AF12E9006D82FE /* CLScoreServerPost.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */; };
 		504DFBCF10AF12E9006D82FE /* CLScoreServerPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 504DFBC910AF12E9006D82FE /* CLScoreServerPost.m */; };
 		504DFBD010AF12E9006D82FE /* CLScoreServerRequest.h in Headers */ = {isa = PBXBuildFile; fileRef = 504DFBCA10AF12E9006D82FE /* CLScoreServerRequest.h */; };
@@ -278,12 +281,15 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		3B07AED412DBBA39005F6465 /* MenuScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuScene.h; sourceTree = "<group>"; };
 		3B07AED512DBBA39005F6465 /* MenuScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuScene.m; sourceTree = "<group>"; };
+		3B50222912F58B7C00C189A1 /* GameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameScene.h; sourceTree = "<group>"; };
+		3B50222A12F58B7C00C189A1 /* GameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameScene.m; sourceTree = "<group>"; };
 		3B50E2A112DE5B25008C4F29 /* NameScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NameScene.h; sourceTree = "<group>"; };
 		3B50E2A212DE5B25008C4F29 /* NameScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NameScene.m; sourceTree = "<group>"; };
 		3B50E2A412DE5B38008C4F29 /* AchievementsScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AchievementsScene.h; sourceTree = "<group>"; };
 		3B50E2A512DE5B38008C4F29 /* AchievementsScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AchievementsScene.m; sourceTree = "<group>"; };
 		3B50E2A712DE5B4B008C4F29 /* AboutScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutScene.h; sourceTree = "<group>"; };
 		3B50E2A812DE5B4B008C4F29 /* AboutScene.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AboutScene.m; sourceTree = "<group>"; };
+		3B5297FA12ECCFFA00B69FF8 /* Chalkduster.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Chalkduster.ttf; sourceTree = "<group>"; };
 		3B8B996512DE528700FAA515 /* background-clean-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-clean-hd.png"; sourceTree = "<group>"; };
 		3B8B996612DE528700FAA515 /* background-clean.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-clean.png"; sourceTree = "<group>"; };
 		3B8B996712DE528700FAA515 /* background-dirty-1-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background-dirty-1-hd.png"; sourceTree = "<group>"; };
@@ -294,6 +300,7 @@
 		3BC77B1D12DCFB0E00EE2B7E /* spritesheet.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spritesheet.png; path = /Users/clw/Projects/Hangman/Resources/spritesheet.png; sourceTree = "<absolute>"; };
 		3BC77B2A12DCFB6E00EE2B7E /* spritesheet-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "spritesheet-hd.plist"; sourceTree = "<group>"; };
 		3BC77B2B12DCFB6E00EE2B7E /* spritesheet-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "spritesheet-hd.png"; sourceTree = "<group>"; };
+		3BEE7D7312F75F7700A7E357 /* words.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = words.plist; sourceTree = "<group>"; };
 		504DFBC810AF12E9006D82FE /* CLScoreServerPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLScoreServerPost.h; sourceTree = "<group>"; };
 		504DFBC910AF12E9006D82FE /* CLScoreServerPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLScoreServerPost.m; sourceTree = "<group>"; };
 		504DFBCA10AF12E9006D82FE /* CLScoreServerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLScoreServerRequest.h; sourceTree = "<group>"; };
@@ -629,6 +636,8 @@
 				3B50E2A512DE5B38008C4F29 /* AchievementsScene.m */,
 				3B50E2A712DE5B4B008C4F29 /* AboutScene.h */,
 				3B50E2A812DE5B4B008C4F29 /* AboutScene.m */,
+				3B50222912F58B7C00C189A1 /* GameScene.h */,
+				3B50222A12F58B7C00C189A1 /* GameScene.m */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -738,6 +747,8 @@
 		50F414EB1069373D002A0D5E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3BEE7D7312F75F7700A7E357 /* words.plist */,
+				3B5297FA12ECCFFA00B69FF8 /* Chalkduster.ttf */,
 				3B8B996512DE528700FAA515 /* background-clean-hd.png */,
 				3B8B996612DE528700FAA515 /* background-clean.png */,
 				3B8B996712DE528700FAA515 /* background-dirty-1-hd.png */,
@@ -1176,6 +1187,8 @@
 				3B8B996E12DE528700FAA515 /* background-dirty-1.png in Resources */,
 				3B8B996F12DE528700FAA515 /* background-dirty-2-hd.png in Resources */,
 				3B8B997012DE528700FAA515 /* background-dirty-2.png in Resources */,
+				3B5297FB12ECCFFA00B69FF8 /* Chalkduster.ttf in Resources */,
+				3BEE7D7412F75F7700A7E357 /* words.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1193,6 +1206,7 @@
 				3B50E2A312DE5B25008C4F29 /* NameScene.m in Sources */,
 				3B50E2A612DE5B38008C4F29 /* AchievementsScene.m in Sources */,
 				3B50E2A912DE5B4B008C4F29 /* AboutScene.m in Sources */,
+				3B50222B12F58B7C00C189A1 /* GameScene.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
