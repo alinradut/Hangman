@@ -10,6 +10,11 @@
 #import "MenuScene.h"
 #import "GameScene.h"
 
+@interface NameScene ()
+- (void)updateName;
+@end
+
+
 @implementation NameScene
 
 +(id) scene {
@@ -66,6 +71,11 @@
 		}
 		
 		name_ = [[NSMutableString alloc] init];
+		
+		if ([[NSUserDefaults standardUserDefaults] valueForKey:@"lastPlayerName"]) {
+			[name_ setString:[[NSUserDefaults standardUserDefaults] valueForKey:@"lastPlayerName"]];
+			[self updateName];
+		}
 	}
 	return self;
 }
@@ -100,6 +110,16 @@
 #pragma mark -
 #pragma mark Menu
 
+- (void)updateName {
+	[nameLabel_ removeFromParentAndCleanup:YES];
+	
+	CGSize winSize = [[CCDirector sharedDirector] winSize];
+	nameLabel_ = [CCLabelTTF labelWithString:name_ fontName:@"Chalkduster.ttf" fontSize:24];
+	nameLabel_.position = ccp(winSize.width/2, 320);
+	nameLabel_.color = ccc3(187,54,54);
+	[self addChild:nameLabel_];
+}
+
 - (void)keyboardButtonTapped:(CCMenuItem *)key {
 	NSString *keyboard = [keyboardLines_ objectAtIndex:key.tag/10];
 	
@@ -112,13 +132,7 @@
 		[name_ appendFormat:@"%c", [keyboard characterAtIndex:key.tag % 10]];
 	}
 
-	[nameLabel_ removeFromParentAndCleanup:YES];
-	
-	CGSize winSize = [[CCDirector sharedDirector] winSize];
-	nameLabel_ = [CCLabelTTF labelWithString:name_ fontName:@"Chalkduster.ttf" fontSize:24];
-	nameLabel_.position = ccp(winSize.width/2, 320);
-	nameLabel_.color = ccc3(187,54,54);
-	[self addChild:nameLabel_];
+	[self updateName];
 }
 
 - (void)backBtnTapped {
@@ -127,6 +141,10 @@
 																				 backwards:YES]];
 }
 - (void)doneBtnTapped {
+	if (![name_ length]) {
+		return;
+	}
+	[[NSUserDefaults standardUserDefaults] setValue:name_ forKey:@"lastPlayerName"];
 	[[CCDirector sharedDirector] replaceScene:[CCTransitionPageTurn transitionWithDuration:.7 
 																					 scene:[GameScene scene]
 																				 backwards:NO]];

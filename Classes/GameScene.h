@@ -16,6 +16,13 @@
 	NSMutableString *displayedWord_;
 	NSInteger wrongLetters_;
 	CCLabelTTF *wordLabel_;
+	
+	int correctKeysPressed_;
+	int correctKeysPressedThisGame_;
+	int gamesWonInARow_;
+	NSMutableArray *achievements_;
+	int score_;
+	CCLabelBMFont *scoreLabel_;
 }
 
 + (id)scene;

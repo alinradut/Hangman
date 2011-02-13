@@ -40,7 +40,7 @@
 		CCSprite *background = [CCSprite spriteWithFile:@"background-clean.png"];
 		background.position = ccp(winSize.width/2, winSize.height/2);
 		[self addChild:background];
-				
+		
 		CCMenuItemImage *backButton = [CCMenuItemImage itemFromNormalSprite:[CCSprite spriteWithSpriteFrameName:@"btn-back.png"]
 															 selectedSprite:[CCSprite spriteWithSpriteFrameName:@"btn-back.png"] 
 																	 target:self 
@@ -68,9 +68,69 @@
 		nooseFrame.position = ccp(53.0, 333);
 		[self addChild:nooseFrame];
 		
+		scoreLabel_ = [CCLabelTTF labelWithString:@"Score: 0" fontName:@"Chalkduster.ttf" fontSize:18];
+		scoreLabel_.color = ccc3(187,54,54);
+		scoreLabel_.position = ccp(winSize.width/2, winSize.height - 17);
+		scoreLabel_.anchorPoint = ccp(0.5, 1);
+		[self addChild:scoreLabel_];
+		
 		[self startGame];
 	}
 	return self;
+}
+
+- (void)achievementUnlocked:(NSString *)achievement {
+	[achievements_ addObject:achievement];
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achievement unlocked!" 
+													message:achievement 
+												   delegate:nil 
+										  cancelButtonTitle:@"Continue" 
+										  otherButtonTitles:nil];
+	[alert show];
+	[alert release];
+}
+
+- (void)updateCorrectKeysPressed {
+	correctKeysPressed_++;
+	correctKeysPressedThisGame_++;
+	score_ += 10 + (correctKeysPressedThisGame_ - 1) * 3;
+	if (correctKeysPressed_ == 10) {
+		[self achievementUnlocked:@"10 correct keys in a row!"];
+		score_ += score_*.10;
+	}
+	if (correctKeysPressed_ == 20) {
+		[self achievementUnlocked:@"20 correct keys in a row!"];
+		score_ += score_*.10;
+	}
+	if (correctKeysPressed_ == 30) {
+		[self achievementUnlocked:@"30 correct keys in a row!"];
+		score_ += score_*.10;
+	}
+	NSLog(@"score: %d", score_);
+	[scoreLabel_ setString:[NSString stringWithFormat:@"Score: %d", score_]];
+}
+
+- (void)updateIncorrectKeysPressed {
+	correctKeysPressed_ = 0;
+	correctKeysPressedThisGame_ = 0;
+}
+
+- (void)updateGamesWon {
+	gamesWonInARow_++;
+	
+	if (gamesWonInARow_ == 5) {
+		[self achievementUnlocked:@"Won 5 games in a row!"];
+	}
+	if (gamesWonInARow_ == 10) {
+		[self achievementUnlocked:@"Won 10 games in a row!"];
+	}
+	if (gamesWonInARow_ == 20) {
+		[self achievementUnlocked:@"Won 20 games in a row!"];
+	}
+}
+
+- (void)updateGamesLost {
+	gamesWonInARow_ = 0;
 }
 
 - (NSString *)randomWord {
@@ -84,6 +144,15 @@
 	self.displayedWord = [NSMutableString stringWithCapacity:[word_ length] * 2];
 	self.pickedLetters = [NSMutableString string];
 	wrongLetters_ = 0;
+	correctKeysPressedThisGame_ = 0;
+	NSLog(@"Word is: %@", word_);
+	
+	while ([self getChildByTag:31]) {
+		[self removeChildByTag:31 cleanup:YES];
+	}
+	while ([self getChildByTag:32]) {
+		[self removeChildByTag:32 cleanup:YES];
+	}
 	
 	[self updateDisplay];
 }
@@ -109,7 +178,7 @@
 		[alert show];
 		[alert release];
 	}
-
+	
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -149,7 +218,9 @@
 }
 
 - (void)updateDisplay {
-	[self removeChildByTag:30 cleanup:YES];
+	if ([self getChildByTag:30]) {
+		[self removeChildByTag:30 cleanup:YES];
+	}
 	if (wrongLetters_) {
 		CCSprite *character = [CCSprite spriteWithSpriteFrameName:[NSString stringWithFormat:@"hangman%d.png", wrongLetters_]];
 		character.tag = 30;
@@ -158,9 +229,9 @@
 		[self addChild:character];
 	}
 	
-
+	
 	CGSize winSize = [[CCDirector sharedDirector] winSize];
-
+	
 	NSRange range;
 	NSMutableArray *characters = [NSMutableArray arrayWithCapacity:0];
 	for (int i=0; i<[word_ length]; i++) {
@@ -175,13 +246,16 @@
 	}
 	[displayedWord_ setString:[characters componentsJoinedByString:@" "]];
 	
-	[wordLabel_ removeFromParentAndCleanup:YES];
-	wordLabel_ = [CCLabelTTF labelWithString:displayedWord_ fontName:@"Chalkduster.ttf" fontSize:24];
-	wordLabel_.color = ccc3(187,54,54);
-	wordLabel_.position = ccp(winSize.width/2, 230);
-	wordLabel_.anchorPoint = ccp(0.5, 0.5);
-	[self addChild:wordLabel_];
+	if (!wordLabel_) {
+		wordLabel_ = [CCLabelTTF labelWithString:displayedWord_ fontName:@"Chalkduster.ttf" fontSize:24];
+		wordLabel_.color = ccc3(187,54,54);
+		wordLabel_.position = ccp(winSize.width/2, 230);
+		wordLabel_.anchorPoint = ccp(0.5, 0.5);
+		[self addChild:wordLabel_];
+	}
+	[wordLabel_ setString:displayedWord_];
 }
+
 
 #pragma mark -
 #pragma mark Menu
@@ -196,18 +270,30 @@
 	
 	if ([word_ rangeOfString:[keyboard substringWithRange:range]].location == NSNotFound) {
 		wrongLetters_++;
+		[self updateIncorrectKeysPressed];
+		CCSprite *incorrect = [CCSprite spriteWithSpriteFrameName:@"incorrect.png"];
+		incorrect.position = key.position;
+		incorrect.tag = 31;
+		[self addChild:incorrect];
 		if (wrongLetters_ == 7) {
 			[self endGame:NO];
 		}
 	}
-
-	if ([displayedWord_ rangeOfString:@"_"].location == NSNotFound) {
-		[self endGame:YES];
+	else {
+		CCSprite *correct = [CCSprite spriteWithSpriteFrameName:@"correct.png"];
+		correct.position = key.position;
+		correct.tag = 32;
+		[self addChild:correct];
+		[self updateCorrectKeysPressed];
 	}
 	
 	[pickedLetters_ appendString:[keyboard substringWithRange:range]];
+
 	[self updateDisplay];
 	
+	if ([displayedWord_ rangeOfString:@"_"].location == NSNotFound) {
+		[self endGame:YES];
+	}
 }
 
 - (void)backBtnTapped {
