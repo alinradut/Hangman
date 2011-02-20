@@ -81,6 +81,7 @@
 
 - (void)achievementUnlocked:(NSString *)achievement {
 	[achievements_ addObject:achievement];
+	
 	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achievement unlocked!" 
 													message:achievement 
 												   delegate:nil 
@@ -88,6 +89,21 @@
 										  otherButtonTitles:nil];
 	[alert show];
 	[alert release];
+	/*
+	CGSize winSize = [[CCDirector sharedDirector] winSize];
+
+	CCSprite *achievementSprite = [CCSprite spriteWithSpriteFrameName:@"btn-achievement.png"];
+	
+	CCLayer *achievementLayer = [[[CCLayer alloc] init] autorelease];
+	achievementLayer.position = ccp(winSize.width/2, winSize.height/2);
+	[achievementLayer addChild:achievementSprite];
+	achievementSprite.position = ccp(winSize.width/2, winSize.height/2);
+	achievementLayer.scale = 0.01;
+	[self addChild:achievementLayer];
+	[achievementLayer runAction:[CCSequence actions:
+								  [CCScaleTo actionWithDuration:.3 scale:1.1],
+								  [CCScaleTo actionWithDuration:.1 scale:0.9],
+								  [CCScaleTo actionWithDuration:.1 scale:1], nil]];*/
 }
 
 - (void)updateCorrectKeysPressed {
