@@ -96,7 +96,7 @@
 	label.anchorPoint = ccp(0.5, 0.5);
 	[self addChild:label];
 	
-	NSString *buttonName = [NSString stringWithFormat:@"keyboard-%d.png", rand()%5 + 1];
+	NSString *buttonName = [NSString stringWithFormat:@"keyboard-%d.png", 1];
 	CCMenuItemImage *menuItem =[CCMenuItemImage itemFromNormalSprite:[CCSprite spriteWithSpriteFrameName:buttonName] 
 													  selectedSprite:[CCSprite spriteWithSpriteFrameName:buttonName]
 															  target:self

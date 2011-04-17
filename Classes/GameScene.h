@@ -23,6 +23,7 @@
 	NSMutableArray *achievements_;
 	int score_;
 	CCLabelBMFont *scoreLabel_;
+    CCLayer *achievementLayer_;
 }
 
 + (id)scene;

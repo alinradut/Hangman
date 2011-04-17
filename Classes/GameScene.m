@@ -81,47 +81,54 @@
 
 - (void)achievementUnlocked:(NSString *)achievement {
 	[achievements_ addObject:achievement];
-	
-	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Achievement unlocked!" 
-													message:achievement 
-												   delegate:nil 
-										  cancelButtonTitle:@"Continue" 
-										  otherButtonTitles:nil];
-	[alert show];
-	[alert release];
-	/*
-	CGSize winSize = [[CCDirector sharedDirector] winSize];
 
-	CCSprite *achievementSprite = [CCSprite spriteWithSpriteFrameName:@"btn-achievement.png"];
-	
-	CCLayer *achievementLayer = [[[CCLayer alloc] init] autorelease];
-	achievementLayer.position = ccp(winSize.width/2, winSize.height/2);
-	[achievementLayer addChild:achievementSprite];
-	achievementSprite.position = ccp(winSize.width/2, winSize.height/2);
-	achievementLayer.scale = 0.01;
-	[self addChild:achievementLayer];
-	[achievementLayer runAction:[CCSequence actions:
-								  [CCScaleTo actionWithDuration:.3 scale:1.1],
-								  [CCScaleTo actionWithDuration:.1 scale:0.9],
-								  [CCScaleTo actionWithDuration:.1 scale:1], nil]];*/
+    if (!achievementLayer_) {
+        CGSize winSize = [[CCDirector sharedDirector] winSize];
+        
+        achievementLayer_ = [[CCLayer alloc] init];
+        achievementLayer_.anchorPoint = ccp(0,0);
+        achievementLayer_.position = ccp(winSize.width/2, winSize.height - 60);
+
+        CCSprite *badge = [CCSprite spriteWithSpriteFrameName:@"btn-achievement.png"];
+        badge.tag = 1;
+        [achievementLayer_ addChild:badge];
+        
+        CCLabelTTF *label = [CCLabelTTF labelWithString:@"" fontName:@"Chalkduster.ttf" fontSize:18];
+		label.color = ccc3(187,54,54);
+        label.tag = 2;
+		[achievementLayer_ addChild:label];
+        
+        [self addChild:achievementLayer_];
+        [achievementLayer_ release];
+    }
+
+    achievementLayer_.scale = 0.01;
+    achievementLayer_.visible = YES;
+    
+    [(CCLabelTTF *)[achievementLayer_ getChildByTag:2] setString:achievement];
+    CGSize size = [achievement sizeWithFont:[UIFont fontWithName:@"Chalkduster" size:18]];
+    [achievementLayer_ getChildByTag:1].position = ccp(-size.width/2 - 12, 0);
+	[achievementLayer_ runAction:[CCSequence actions:
+                                 [CCScaleTo actionWithDuration:.2 scale:1.6],
+                                 [CCScaleTo actionWithDuration:.1 scale:0.8],
+                                 [CCScaleTo actionWithDuration:.1 scale:1],nil]];
 }
 
 - (void)updateCorrectKeysPressed {
 	correctKeysPressed_++;
 	correctKeysPressedThisGame_++;
 	score_ += 10 + (correctKeysPressedThisGame_ - 1) * 3;
-	if (correctKeysPressed_ == 10) {
-		[self achievementUnlocked:@"10 correct keys in a row!"];
-		score_ += score_*.10;
-	}
-	if (correctKeysPressed_ == 20) {
-		[self achievementUnlocked:@"20 correct keys in a row!"];
-		score_ += score_*.10;
-	}
-	if (correctKeysPressed_ == 30) {
-		[self achievementUnlocked:@"30 correct keys in a row!"];
-		score_ += score_*.10;
-	}
+
+    
+    if (correctKeysPressed_ && correctKeysPressed_ % 10 == 0) {
+        NSInteger bonus = score_ * ((float)correctKeysPressed_/200);
+        if (!bonus) {
+            bonus = 1;
+        }
+        score_ += bonus;
+        NSString *achievement = [NSString stringWithFormat:@"%d keys in a row! (+%d)", correctKeysPressed_, bonus];
+        [self achievementUnlocked:achievement];
+    }
 	NSLog(@"score: %d", score_);
 	[scoreLabel_ setString:[NSString stringWithFormat:@"Score: %d", score_]];
 }
@@ -134,15 +141,18 @@
 - (void)updateGamesWon {
 	gamesWonInARow_++;
 	
-	if (gamesWonInARow_ == 5) {
-		[self achievementUnlocked:@"Won 5 games in a row!"];
-	}
-	if (gamesWonInARow_ == 10) {
-		[self achievementUnlocked:@"Won 10 games in a row!"];
-	}
-	if (gamesWonInARow_ == 20) {
-		[self achievementUnlocked:@"Won 20 games in a row!"];
-	}
+    if (gamesWonInARow_ && (gamesWonInARow_ % 10 == 0 || gamesWonInARow_ == 5)) {
+        NSInteger bonus = score_* ((float)gamesWonInARow_ / 100);
+        if (!bonus) {
+            bonus = 1;
+        }
+        score_ += bonus;
+
+        NSString *achievement = [NSString stringWithFormat:@"%d games in a row! (+%d)", gamesWonInARow_, bonus];
+		[self achievementUnlocked:achievement];
+    }
+    
+    [scoreLabel_ setString:[NSString stringWithFormat:@"Score: %d", score_]];
 }
 
 - (void)updateGamesLost {
@@ -178,21 +188,23 @@
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Awesome!" 
 														message:[NSString stringWithFormat:@"You're right, the word is %@", word_]
 													   delegate:self 
-											  cancelButtonTitle:@"Try another" 
-											  otherButtonTitles:@"I'm done", nil];
+											  cancelButtonTitle:@"Try another"
+                                              otherButtonTitles:nil];
 		alert.tag = 1;
 		[alert show];
 		[alert release];
+        [self updateGamesWon];
 	}
 	else {
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Too bad!" 
 														message:[NSString stringWithFormat:@"You didn't make it, the word was %@", word_]
 													   delegate:self 
 											  cancelButtonTitle:@"Try another" 
-											  otherButtonTitles:@"I'm done", nil];
+											  otherButtonTitles:nil];
 		alert.tag = 2;
 		[alert show];
 		[alert release];
+        [self updateGamesLost];
 	}
 	
 }
@@ -283,7 +295,8 @@
 	if ([pickedLetters_ rangeOfString:[keyboard substringWithRange:range]].location != NSNotFound) {
 		return;
 	}
-	
+    achievementLayer_.visible = NO;
+
 	if ([word_ rangeOfString:[keyboard substringWithRange:range]].location == NSNotFound) {
 		wrongLetters_++;
 		[self updateIncorrectKeysPressed];

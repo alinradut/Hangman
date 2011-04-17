@@ -195,7 +195,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 99";
 		rLen = 0;
-		rLoc = 3136;
+		rLoc = 3137;
 		rType = 0;
 		vrLen = 1526;
 		vrLoc = 1603;
@@ -205,7 +205,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 102";
 		rLen = 0;
-		rLoc = 3359;
+		rLoc = 3360;
 		rType = 0;
 		vrLen = 1575;
 		vrLoc = 1953;
@@ -215,7 +215,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 99";
 		rLen = 0;
-		rLoc = 2952;
+		rLoc = 2953;
 		rType = 0;
 		vrLen = 1551;
 		vrLoc = 1953;
@@ -225,7 +225,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 102";
 		rLen = 0;
-		rLoc = 3166;
+		rLoc = 3167;
 		rType = 0;
 		vrLen = 1551;
 		vrLoc = 1953;
@@ -235,7 +235,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 105";
 		rLen = 0;
-		rLoc = 3339;
+		rLoc = 3340;
 		rType = 0;
 		vrLen = 1643;
 		vrLoc = 1913;
@@ -245,7 +245,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 102";
 		rLen = 0;
-		rLoc = 3139;
+		rLoc = 3140;
 		rType = 0;
 		vrLen = 1618;
 		vrLoc = 1913;
@@ -255,7 +255,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 100";
 		rLen = 0;
-		rLoc = 3069;
+		rLoc = 3070;
 		rType = 0;
 		vrLen = 1516;
 		vrLoc = 2266;
@@ -265,7 +265,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 84";
 		rLen = 0;
-		rLoc = 2401;
+		rLoc = 2402;
 		rType = 0;
 		vrLen = 1516;
 		vrLoc = 2266;
@@ -279,9 +279,9 @@
 	};
 	3B50222A12F58B7C00C189A1 /* GameScene.m */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {1651, 4264}}";
-			sepNavSelRange = "{2401, 0}";
-			sepNavVisRange = "{2266, 1516}";
+			sepNavIntBoundsRect = "{{0, 0}, {1651, 4238}}";
+			sepNavSelRange = "{2402, 0}";
+			sepNavVisRange = "{2266, 1517}";
 		};
 	};
 	3B50223512F58CDA00C189A1 /* PBXTextBookmark */ = {
@@ -531,7 +531,7 @@
 		fRef = 3B50222A12F58B7C00C189A1 /* GameScene.m */;
 		name = "GameScene.m: 92";
 		rLen = 0;
-		rLoc = 3359;
+		rLoc = 3360;
 		rType = 0;
 		vrLen = 1538;
 		vrLoc = 1603;
