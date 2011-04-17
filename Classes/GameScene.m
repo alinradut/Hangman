@@ -14,6 +14,7 @@
 - (void)updateDisplay;
 - (void)startGame;
 - (void)endGame:(BOOL)successfully;
+- (void)saveGameProgress;
 - (void)backBtnTapped;
 
 @end
@@ -23,6 +24,8 @@
 @synthesize displayedWord = displayedWord_;
 @synthesize pickedLetters = pickedLetters_;
 @synthesize word = word_;
+@synthesize scoreGuid = scoreGuid_;
+@synthesize playerName = playerName_;
 
 +(id) scene {
 	CCScene *scene = [CCScene node];
@@ -35,6 +38,8 @@
 -(id) init {
 	if( (self=[super init] )) {
 		srand ( time(NULL) );
+        scoreDict_ = [[NSMutableDictionary alloc] init];
+        achievements_ = [[NSMutableArray alloc] init];
 		CGSize winSize = [[CCDirector sharedDirector] winSize];
 		
 		CCSprite *background = [CCSprite spriteWithFile:@"background-clean.png"];
@@ -82,17 +87,21 @@
 - (void)achievementUnlocked:(NSString *)achievement {
 	[achievements_ addObject:achievement];
 
+    // lazy load the achievements layer
     if (!achievementLayer_) {
         CGSize winSize = [[CCDirector sharedDirector] winSize];
         
+        // instantiate the layer
         achievementLayer_ = [[CCLayer alloc] init];
         achievementLayer_.anchorPoint = ccp(0,0);
         achievementLayer_.position = ccp(winSize.width/2, winSize.height - 60);
 
+        // create the achievement badge sprite
         CCSprite *badge = [CCSprite spriteWithSpriteFrameName:@"btn-achievement.png"];
         badge.tag = 1;
         [achievementLayer_ addChild:badge];
         
+        // create the achievement label
         CCLabelTTF *label = [CCLabelTTF labelWithString:@"" fontName:@"Chalkduster.ttf" fontSize:18];
 		label.color = ccc3(187,54,54);
         label.tag = 2;
@@ -102,35 +111,45 @@
         [achievementLayer_ release];
     }
 
+    // make the achievement layer really really small
     achievementLayer_.scale = 0.01;
+    
+    // update the achievement text
+    [(CCLabelTTF *)[achievementLayer_ getChildByTag:2] setString:achievement];
+    
     achievementLayer_.visible = YES;
     
-    [(CCLabelTTF *)[achievementLayer_ getChildByTag:2] setString:achievement];
+    // compute the size of the text
     CGSize size = [achievement sizeWithFont:[UIFont fontWithName:@"Chalkduster" size:18]];
+    
+    // move the achievements badge to the left
     [achievementLayer_ getChildByTag:1].position = ccp(-size.width/2 - 12, 0);
-	[achievementLayer_ runAction:[CCSequence actions:
+    
+    // animate the achievements layer and give it a bouncy feeling
+    [achievementLayer_ runAction:[CCSequence actions:
+                                 // scale from 0.01 to 1.60
                                  [CCScaleTo actionWithDuration:.2 scale:1.6],
+                                 // scale from 1.60 to 0.80
                                  [CCScaleTo actionWithDuration:.1 scale:0.8],
+                                 // scale from 0.80 to 1.00
                                  [CCScaleTo actionWithDuration:.1 scale:1],nil]];
 }
 
 - (void)updateCorrectKeysPressed {
-	correctKeysPressed_++;
-	correctKeysPressedThisGame_++;
-	score_ += 10 + (correctKeysPressedThisGame_ - 1) * 3;
-
+    correctKeysPressed_++;
+    correctKeysPressedThisGame_++;
+    score_ += 10 + (correctKeysPressedThisGame_ - 1) * 3;
+    
     
     if (correctKeysPressed_ && correctKeysPressed_ % 10 == 0) {
         NSInteger bonus = score_ * ((float)correctKeysPressed_/200);
-        if (!bonus) {
-            bonus = 1;
-        }
         score_ += bonus;
+        
         NSString *achievement = [NSString stringWithFormat:@"%d keys in a row! (+%d)", correctKeysPressed_, bonus];
         [self achievementUnlocked:achievement];
     }
-	NSLog(@"score: %d", score_);
-	[scoreLabel_ setString:[NSString stringWithFormat:@"Score: %d", score_]];
+    [scoreLabel_ setString:[NSString stringWithFormat:@"Score: %d", score_]];
+    [self saveGameProgress];
 }
 
 - (void)updateIncorrectKeysPressed {
@@ -143,9 +162,6 @@
 	
     if (gamesWonInARow_ && (gamesWonInARow_ % 10 == 0 || gamesWonInARow_ == 5)) {
         NSInteger bonus = score_* ((float)gamesWonInARow_ / 100);
-        if (!bonus) {
-            bonus = 1;
-        }
         score_ += bonus;
 
         NSString *achievement = [NSString stringWithFormat:@"%d games in a row! (+%d)", gamesWonInARow_, bonus];
@@ -153,6 +169,7 @@
     }
     
     [scoreLabel_ setString:[NSString stringWithFormat:@"Score: %d", score_]];
+    [self saveGameProgress];
 }
 
 - (void)updateGamesLost {
@@ -188,7 +205,7 @@
 		UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Awesome!" 
 														message:[NSString stringWithFormat:@"You're right, the word is %@", word_]
 													   delegate:self 
-											  cancelButtonTitle:@"Try another"
+											  cancelButtonTitle:@"Try another"  
                                               otherButtonTitles:nil];
 		alert.tag = 1;
 		[alert show];
@@ -207,6 +224,22 @@
         [self updateGamesLost];
 	}
 	
+}
+
+- (void)saveGameProgress {
+    [scoreDict_ setObject:scoreGuid_ forKey:@"guid"];
+    [scoreDict_ setObject:playerName_ forKey:@"name"];
+    [scoreDict_ setObject:achievements_ forKey:@"achievements"];
+    [scoreDict_ setObject:[NSNumber numberWithInt:score_] forKey:@"score"];
+    
+    NSMutableArray *scores = [NSMutableArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"scores"]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"guid = %@", scoreGuid_];
+    NSArray *result = [scores filteredArrayUsingPredicate:predicate];
+    if ([result count]) {
+        [scores removeObjectsInArray:result];
+    }
+    [scores addObject:scoreDict_];
+    [[NSUserDefaults standardUserDefaults] setObject:scores forKey:@"scores"];
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -334,8 +367,18 @@
 #pragma mark Memory management
 
 - (void) dealloc {
+    [scoreDict_ release];
+    [achievements_ release];
+
 	self.word = nil;
 	self.displayedWord = nil;
+    
+    if (achievementLayer_) {
+        [achievementLayer_ release];
+        achievementLayer_ = nil;
+    }
+    self.scoreGuid = nil;
+    self.playerName = nil;
 	[super dealloc];
 }
 

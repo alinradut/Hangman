@@ -144,9 +144,20 @@
 	if (![name_ length]) {
 		return;
 	}
+
 	[[NSUserDefaults standardUserDefaults] setValue:name_ forKey:@"lastPlayerName"];
+    
+    CFUUIDRef theUUID = CFUUIDCreate(NULL);
+    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+    CFRelease(theUUID);
+    
+    CCScene *scene = [GameScene scene];
+    GameScene *gameScene = (GameScene *)[[scene children] objectAtIndex:0];
+    gameScene.scoreGuid = [(NSString *)string autorelease];
+    gameScene.playerName = name_;
+    
 	[[CCDirector sharedDirector] replaceScene:[CCTransitionPageTurn transitionWithDuration:.7 
-																					 scene:[GameScene scene]
+																					 scene:scene
 																				 backwards:NO]];
 }
 

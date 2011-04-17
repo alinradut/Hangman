@@ -24,6 +24,10 @@
 	int score_;
 	CCLabelBMFont *scoreLabel_;
     CCLayer *achievementLayer_;
+    
+    NSString *scoreGuid_;
+    NSString *playerName_;
+    NSMutableDictionary *scoreDict_;
 }
 
 + (id)scene;
@@ -32,6 +36,7 @@
 @property (nonatomic, retain) NSMutableString *displayedWord;
 @property (nonatomic, retain) NSMutableString *pickedLetters;
 @property (nonatomic, retain) NSString *word;
-
+@property (nonatomic, retain) NSString *scoreGuid;
+@property (nonatomic, retain) NSString *playerName;
 
 @end
