@@ -24,7 +24,7 @@
 	if( (self=[super init] )) {
 		CGSize winSize = [[CCDirector sharedDirector] winSize];
 		
-		CCSprite *background = [CCSprite spriteWithFile:@"background-clean.png"];
+		CCSprite *background = [CCSprite spriteWithFile:@"background-dirty-1.png"];
 		background.position = ccp(winSize.width/2, winSize.height/2);
 		[self addChild:background];
 		
@@ -70,8 +70,7 @@
 }
 
 - (void)aboutBtnTapped {
-	[[CCDirector sharedDirector] replaceScene:[CCTransitionPageTurn transitionWithDuration:.7 
-																					 scene:[AboutScene scene]]];
+	[[CCDirector sharedDirector] replaceScene:[AboutScene scene]];
 	
 }
 

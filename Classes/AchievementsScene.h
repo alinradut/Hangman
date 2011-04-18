@@ -10,7 +10,7 @@
 #import "cocos2d.h"
 
 @interface AchievementsScene : CCLayer {
-
+    NSArray *scores_;
 }
 
 + (id)scene;

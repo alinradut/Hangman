@@ -26,17 +26,18 @@
 
 -(id) init {
 	if( (self=[super init] )) {
+
 		CGSize winSize = [[CCDirector sharedDirector] winSize];
 		
 		CCSprite *background = [CCSprite spriteWithFile:@"background-clean.png"];
-		background.position = ccp(winSize.width/2, winSize.height/2);
+        background.position = ccp(winSize.width/2, winSize.height/2);
 		[self addChild:background];
-		
+
 		CCSprite *title = [CCSprite spriteWithSpriteFrameName:@"txt-enter-name.png"];
 		title.position = ccp(winSize.width/2, winSize.height - 17);
 		title.anchorPoint = ccp(0.5, 1);
 		[self addChild:title];
-		
+
 		CCSprite *textPlaceholder = [CCSprite spriteWithSpriteFrameName:@"name-placeholder.png"];
 		textPlaceholder.position = ccp(winSize.width/2, 305);
 		[self addChild:textPlaceholder];
@@ -59,6 +60,7 @@
 															 selectedSprite:[CCSprite spriteWithSpriteFrameName:@"btn-done.png"] 
 																	 target:self 
 																   selector:@selector(doneBtnTapped)];
+
 		doneButton.position = ccp(winSize.width/2,260);
 		[keyboard addChild:doneButton];
 		
@@ -96,7 +98,7 @@
 	label.anchorPoint = ccp(0.5, 0.5);
 	[self addChild:label];
 	
-	NSString *buttonName = [NSString stringWithFormat:@"keyboard-%d.png", 1];
+	NSString *buttonName = [NSString stringWithFormat:@"keyboard-%d.png", rand() % 5 + 1];
 	CCMenuItemImage *menuItem =[CCMenuItemImage itemFromNormalSprite:[CCSprite spriteWithSpriteFrameName:buttonName] 
 													  selectedSprite:[CCSprite spriteWithSpriteFrameName:buttonName]
 															  target:self

@@ -10,7 +10,7 @@
 #import "cocos2d.h"
 
 @interface AboutScene : CCLayer {
-
+    UITextView *textView_;
 }
 
 + (id)scene;

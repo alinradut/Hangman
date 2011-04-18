@@ -142,6 +142,7 @@
     
     
     if (correctKeysPressed_ && correctKeysPressed_ % 10 == 0) {
+        // player receives a bonus based on correct consecutive keys pressed for all games
         NSInteger bonus = score_ * ((float)correctKeysPressed_/200);
         score_ += bonus;
         
@@ -161,6 +162,7 @@
 	gamesWonInARow_++;
 	
     if (gamesWonInARow_ && (gamesWonInARow_ % 10 == 0 || gamesWonInARow_ == 5)) {
+        // player receives a bonus based on consecutive games won
         NSInteger bonus = score_* ((float)gamesWonInARow_ / 100);
         score_ += bonus;
 
@@ -174,6 +176,9 @@
 
 - (void)updateGamesLost {
 	gamesWonInARow_ = 0;
+    
+    // player loses 25% of points
+    score_ = score * .75;
 }
 
 - (NSString *)randomWord {
@@ -239,7 +244,9 @@
         [scores removeObjectsInArray:result];
     }
     [scores addObject:scoreDict_];
+    NSLog(@"Saving scores: %@", scores);
     [[NSUserDefaults standardUserDefaults] setObject:scores forKey:@"scores"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
@@ -373,10 +380,6 @@
 	self.word = nil;
 	self.displayedWord = nil;
     
-    if (achievementLayer_) {
-        [achievementLayer_ release];
-        achievementLayer_ = nil;
-    }
     self.scoreGuid = nil;
     self.playerName = nil;
 	[super dealloc];

@@ -112,6 +112,11 @@
 	// load the spritesheet
 	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:@"spritesheet.plist"];
 
+    // preload the keyboard labels
+    for (unichar c='A'; c<='Z'; c++) {
+        [CCLabelTTF labelWithString:[NSString stringWithCharacters:&c length:1] fontName:@"Chalkduster.ttf" fontSize:24];
+    }
+    
 	// Run the intro Scene
 	[[CCDirector sharedDirector] runWithScene: [MenuScene scene]];		
 }
