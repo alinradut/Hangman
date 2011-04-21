@@ -178,7 +178,7 @@
 	gamesWonInARow_ = 0;
     
     // player loses 25% of points
-    score_ = score * .75;
+    score_ = score_ * .75;
 }
 
 - (NSString *)randomWord {
